@@ -1,0 +1,57 @@
+#include "FreeRTOS.h"
+#include "board_io.h"
+#include "common_macros.h"
+#include "gpio_isr.h"
+#include "lpc_peripherals.h"
+#include "periodic_scheduler.h"
+#include "semphr.h"
+#include "task.h"
+#include <stdio.h>
+
+void configure_your_gpio_interrupt();
+void sleep_on_sem_task(void *p);
+void gpio0_interrupt();
+void gpio0__interrupt_dispatcher();
+
+static SemaphoreHandle_t switch_pressed_signal;
+
+int main(void) {
+  switch_pressed_signal = xSemaphoreCreateBinary(); // Create your binary semaphore
+
+  configure_your_gpio_interrupt(); // TODO: Setup interrupt by re-using code from Part 0
+  lpc_peripheral__enable_interrupt(LPC_PERIPHERAL__GPIO, gpio0_interrupt, "name");
+  NVIC_EnableIRQ(GPIO_IRQn); // Enable interrupt gate for the GPIO
+
+  xTaskCreate(sleep_on_sem_task, "sem", (512U * 4) / sizeof(void *), NULL, PRIORITY_LOW, NULL);
+  vTaskStartScheduler();
+  return 0;
+}
+
+void clear_gpio_interrupt() { LPC_GPIOINT->IO0IntClr |= (1 << 30); }
+
+void gpio0_interrupt(void) {
+  fprintf(stderr, "ISR Entry\n");
+  xSemaphoreGiveFromISR(switch_pressed_signal, NULL);
+  clear_gpio_interrupt();
+}
+void sleep_on_sem_task(void *p) {
+  LPC_GPIO1->DIR |= 1 << 24; // Configure pin as output
+  while (1) {
+    // Use xSemaphoreTake with forever delay and blink an LED when you get the signal
+    if (xSemaphoreTake(switch_pressed_signal, portMAX_DELAY)) {
+
+      LPC_GPIO1->PIN |= 1 << 24;
+      delay__ms(100);
+      LPC_GPIO1->PIN &= ~(1 << 24);
+      delay__ms(100);
+    }
+  }
+}
+
+void configure_your_gpio_interrupt(void) {
+
+  LPC_GPIO0->DIR &= ~(1 << 30);
+  LPC_IOCON->P0_30 &= ~(UINT32_C(3) << 3);
+  LPC_IOCON->P0_30 |= (UINT32_C(1) << 3);
+  LPC_GPIOINT->IO0IntEnF |= (1 << 30);
+}

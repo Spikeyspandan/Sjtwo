@@ -1,0 +1,29 @@
+// #include "FreeRTOS.h"
+// #include "board_io.h"
+// #include "common_macros.h"
+// #include "gpio_isr.h"
+// #include "lab_interrupt.h"
+// #include "periodic_scheduler.h"
+// #include "semphr.h"
+// #include "task.h"
+// #include <stdio.h>
+// void pin29_isr(void) {
+//   LPC_GPIO1->PIN |= 1 << 18;
+//   delay__ms(200);
+//   LPC_GPIO1->PIN &= ~(1 << 18);
+//   delay__ms(200);
+// }
+
+// void pin30_isr(void) {
+//   LPC_GPIO1->PIN |= 1 << 24;
+//   delay__ms(200);
+//   LPC_GPIO1->PIN &= ~(1 << 24);
+//   delay__ms(200);
+// }
+// int main() {
+//   lpc_peripheral__enable_interrupt(LPC_PERIPHERAL__GPIO, gpio0__interrupt_dispatcher, "name");
+//   gpio0__attach_interrupt(29, GPIO_INTR__FALLING_EDGE, pin29_isr);
+//   gpio0__attach_interrupt(30, GPIO_INTR__RISING_EDGE, pin30_isr);
+//   NVIC_EnableIRQ(GPIO_IRQn);
+//   return 0;
+// }
