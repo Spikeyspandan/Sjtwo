@@ -3,3 +3,10 @@
 .sconsign.dblite
 _build_*/*
 _build_*
+
+
+#python venv
+/bin
+/lib
+/share
+pyvenv.cfg
