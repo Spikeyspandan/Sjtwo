@@ -30,7 +30,24 @@
         "event_groups.h": "c",
         "mp3_decoder.h": "c",
         "ssp2_lab.h": "c",
-        "uart.h": "c"
+        "uart.h": "c",
+        "song_list.h": "c",
+        "mp3_functions.h": "c",
+        "gpio_isr.h": "c",
+        "adc.h": "c",
+        "cstddef": "c",
+        "task.h": "c",
+        "ssp2.h": "c",
+        "lcd.h": "c",
+        "string.h": "c",
+        "lpc_peripherals.h": "c",
+        "gp1o_lab.h": "c",
+        "function_types.h": "c",
+        "mp3_buttons.h": "c",
+        "regex": "c",
+        "sstream": "c",
+        "lcd_driver.h": "c",
+        "ssp_mp3.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

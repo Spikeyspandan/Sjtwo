@@ -1,5 +1,3 @@
-// @file: song_list.h
-
 #pragma once
 
 #include <stddef.h> // size_t

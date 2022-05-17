@@ -92,13 +92,19 @@ bool gpio0__get_level(uint8_t pin, uint8_t port) {
   bool level = false;
   switch (port) {
   case 0:
-    level = LPC_GPIO0->PIN & (1 << pin);
+    if (LPC_GPIO0->PIN & (1 << pin)) {
+      level = true;
+    }
     break;
   case 1:
-    level = LPC_GPIO1->PIN & (1 << pin);
+    if (LPC_GPIO1->PIN & (1 << pin)) {
+      level = true;
+    }
     break;
   case 2:
-    level = LPC_GPIO2->PIN & (1 << pin);
+    if (LPC_GPIO2->PIN & (1 << pin)) {
+      level = true;
+    }
     break;
 
   default:

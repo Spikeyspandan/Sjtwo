@@ -1,5 +1,7 @@
 #include "mp3_decoder.h"
+#include "delay.h"
 #include "gpio.h"
+#include "mp3_buttons.h"
 #include "ssp2.h"
 #include "stdio.h"
 
@@ -24,12 +26,17 @@ void mp3_decoder(void) {
 }
 
 void mp3_decoder_init(void) {
+  mp3_pins_init();
   gpio__set(X_RESET);
   gpio__set(X_DCS);
   gpio__set(X_CS);
 
   write_register(0x0B, 0x00, 0x00);
-  ssp2__initialize(4800);
+
+  ssp2__initialize(1);
+  delay__ms(100);
+  write_register(0x00, 0x48, 0x00);
+  write_register(0x03, 0xF0, 0xF0);
 }
 
 void read_register(uint8_t address) {
